@@ -10,16 +10,12 @@ class App extends Component {
   }
 
   async loadBlockchainData() {
-    const web3 = new Web3(Web3.givenProvider || "http://localhost:8545");
+    const web3 = new Web3(Web3.givenProvider || "http://localhost:8545")
     const req = await web3.eth.requestAccounts();
-    const network = await web3.eth.net.getNetworkType();
-    console.log("network", network);
-    const accounts = await web3.eth.getAccounts();
-    console.log("account", accounts[0]);
+    const accounts = await web3.eth.getAccounts()
     this.setState({ account: accounts[0] })
     const myContract = new web3.eth.Contract(MYCONTRACT_ABI, MYCONTRACT_ADDRESS)
     this.setState({ myContract })
-    console.log("myContract", myContract);
     const taskCount = await myContract.methods.taskCount().call()
     this.setState({ taskCount })
     for (var i = 1; i <= taskCount; i++) {
