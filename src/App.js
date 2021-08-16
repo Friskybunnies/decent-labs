@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Web3 from 'web3';
 import './App.css';
-import { TODO_LIST_ABI, TODO_LIST_ADDRESS } from './config';
+import { MYCONTRACT_ABI, MYCONTRACT_ADDRESS } from './config';
 import TodoList from './TodoList';
 
 class App extends Component {
@@ -17,12 +17,13 @@ class App extends Component {
     const accounts = await web3.eth.getAccounts();
     console.log("account", accounts[0]);
     this.setState({ account: accounts[0] })
-    const todoList = new web3.eth.Contract(TODO_LIST_ABI, TODO_LIST_ADDRESS)
-    this.setState({ todoList })
-    const taskCount = await todoList.methods.taskCount().call()
+    const myContract = new web3.eth.Contract(MYCONTRACT_ABI, MYCONTRACT_ADDRESS)
+    this.setState({ myContract })
+    console.log("myContract", myContract);
+    const taskCount = await myContract.methods.taskCount().call()
     this.setState({ taskCount })
     for (var i = 1; i <= taskCount; i++) {
-      const task = await todoList.methods.tasks(i).call()
+      const task = await myContract.methods.tasks(i).call()
       this.setState({
         tasks: [...this.state.tasks, task]
       })
@@ -45,7 +46,7 @@ class App extends Component {
 
   createTask(content) {
     this.setState({ loading: true })
-    this.state.todoList.methods.createTask(content).send({ from: this.state.account })
+    this.state.myContract.methods.createTask(content).send({ from: this.state.account })
       .once('receipt', (receipt) => {
         this.setState({ loading: false })
       })
@@ -53,7 +54,7 @@ class App extends Component {
 
   toggleCompleted(taskId) {
     this.setState({ loading: true })
-    this.state.todoList.methods.toggleCompleted(taskId).send({ from: this.state.account })
+    this.state.myContract.methods.toggleCompleted(taskId).send({ from: this.state.account })
       .once('receipt', (receipt) => {
         this.setState({ loading: false })
       })
