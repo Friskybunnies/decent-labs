@@ -5,8 +5,24 @@ import { MYCONTRACT_ABI, MYCONTRACT_ADDRESS } from './config';
 import TodoList from './TodoList';
 
 class App extends Component {
+  
+  /* updateMessage(message) {
+    const list = document.getElementById('messages')
+    const item = document.createElement('p')
+    item.textContent = message
+    list.appendChild(item)
+  } */
+
   componentDidMount() {
     this.loadBlockchainData();
+    const eventSource = new EventSource('http://localhost:5000');
+    eventSource.onmessage = (event) => {
+      console.log(event);
+    };
+    eventSource.onerror = () => {
+      console.log('Socket closed');
+      eventSource.close();
+    };
   }
 
   async loadBlockchainData() {

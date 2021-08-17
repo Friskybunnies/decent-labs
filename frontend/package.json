@@ -2,6 +2,7 @@
   "name": "eth-todo-list-react",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:5000",
   "dependencies": {
     "bootstrap": "^4.6.0",
     "create-react-app": "^4.0.3",
