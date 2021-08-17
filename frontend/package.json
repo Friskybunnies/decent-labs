@@ -1,5 +1,5 @@
 {
-  "name": "eth-todo-list-react",
+  "name": "decent_labs",
   "version": "0.1.0",
   "private": true,
   "proxy": "http://localhost:5000",
