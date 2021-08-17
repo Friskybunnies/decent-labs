@@ -41,7 +41,15 @@ app.get("/", async (req,res) => {
     res.setHeader('Content-Type', 'text/event-stream');
     res.setHeader('Access-Control-Allow-Origin', '*');
 
-    console.log('Server is ready to return data');
+    Data.find()
+        .then(each_data => {
+            const existing_data = []
+            for (let i = 0; i < each_data.length; i++) {
+                existing_data.push(" " + each_data[i].content);
+            };
+        res.write(`data: ${existing_data}\n\n`);
+    });
+    console.log('Server is ready to transform data');
     myContract.events.TaskCreated({})
         .on('data', async function(event){
             const datum = event.returnValues['1'];
@@ -52,14 +60,14 @@ app.get("/", async (req,res) => {
             });
             db_data.save();
 
-            console.log('Loading database');
+            console.log('Server is ready to return data to client');
             
             const intervalId = setInterval(() => {
                 Data.find()
                     .then(each_data => {
                         const transformed_data = []
                         for (let i = 0; i < each_data.length; i++) {
-                            transformed_data.push(each_data[i].content + " ");
+                            transformed_data.push(" " + each_data[i].content);
                         };
                         res.write(`data: ${transformed_data}\n\n`);
                     }).catch(err => {
