@@ -41,7 +41,7 @@ app.get("/", async (req,res) => {
     res.setHeader('Content-Type', 'text/event-stream');
     res.setHeader('Access-Control-Allow-Origin', '*');
 
-    console.log('This is working');
+    console.log('Server is ready to return data');
     myContract.events.TaskCreated({})
         .on('data', async function(event){
             const datum = event.returnValues['1'];
@@ -59,7 +59,7 @@ app.get("/", async (req,res) => {
                     .then(each_data => {
                         const transformed_data = []
                         for (let i = 0; i < each_data.length; i++) {
-                            transformed_data.push(each_data[i].content);
+                            transformed_data.push(each_data[i].content + " ");
                         };
                         res.write(`data: ${transformed_data}\n\n`);
                     }).catch(err => {
@@ -74,18 +74,6 @@ app.get("/", async (req,res) => {
                 clearInterval(intervalId)
                 res.end()
             });
-
-            /* const intervalId = setInterval(() => {
-                const db_full = Data.find();
-                console.log(db_full);
-                res.write(db_full);
-            }, 1000)
-
-            res.on('close', () => {
-                console.log('Client closed connection')
-                clearInterval(intervalId)
-                res.end()
-            }); */
         })
         .on('error', console.error);
 })

@@ -18,6 +18,7 @@ class App extends Component {
     const eventSource = new EventSource('http://localhost:5000');
     eventSource.onmessage = (event) => {
       console.log(event);
+      this.setState({ event });
     };
     eventSource.onerror = () => {
       console.log('Socket closed');
@@ -49,7 +50,8 @@ class App extends Component {
       account: '',
       taskCount: 0,
       tasks: [],
-      loading: true
+      loading: true,
+      event: ""
     }
 
     this.createTask = this.createTask.bind(this)
@@ -95,6 +97,7 @@ class App extends Component {
               }
             </main>
           </div>
+          <div>{this.state.event.data}</div>
         </div>
       </div>
     );
