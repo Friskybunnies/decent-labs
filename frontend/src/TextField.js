@@ -16,7 +16,7 @@ class TextField extends Component {
             }}
             type="text"
             className="form-control"
-            placeholder="Add task..."
+            placeholder="Add letters to transform"
             required />
           <input type="submit" hidden={true} />
         </form>

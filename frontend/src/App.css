@@ -19,4 +19,6 @@ ul {
 .return-field {
   margin-top: 10vh;
   text-align: center;
+  margin-left: 10vw;
+  margin-right: 10vw;
 }

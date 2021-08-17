@@ -65,7 +65,7 @@ class App extends Component {
             </main>
           </div>
           <div className="return-field">
-            <div className="text-center"><h3>Transformed data from the database using ROT13</h3></div>
+            <div className="text-center"><h3>List of user inputs returned from database using ROT13:</h3></div>
             <div>{this.state.event.data}</div>
           </div>
         </div>

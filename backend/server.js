@@ -2,9 +2,6 @@ const express = require("express");
 const bodyParser = require('body-parser');
 const app = express();
 
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-
 const dbConfig = require('./config/database.config.js');
 const Data = require('./models/data.model.js');
 const mongoose = require('mongoose');
@@ -42,18 +39,18 @@ app.get("/", async (req,res) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
 
     Data.find()
-        .then(each_data => {
+        .then(each_datum => {
             const existing_data = []
-            for (let i = 0; i < each_data.length; i++) {
-                existing_data.push(" " + each_data[i].content);
+            for (let i = 0; i < each_datum.length; i++) {
+                existing_data.push(" " + each_datum[i].content);
             };
         res.write(`data: ${existing_data}\n\n`);
     });
     console.log('Server is ready to transform data');
     myContract.events.TaskCreated({})
         .on('data', async function(event){
-            const datum = event.returnValues['1'];
-            const new_datum = rot13(datum);
+            const input_datum = event.returnValues['1'];
+            const new_datum = rot13(input_datum);
             console.log("ROT13 data:", new_datum);
             const db_data = new Data({
                 content: new_datum
