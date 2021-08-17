@@ -55,32 +55,32 @@ app.get("/", async (req,res) => {
             const db_data = new Data({
                 content: new_datum
             });
-            db_data.save();
+    db_data.save();
 
-            console.log('Server is ready to return data to client');
-            
-            const intervalId = setInterval(() => {
-                Data.find()
-                    .then(each_data => {
-                        const transformed_data = []
-                        for (let i = 0; i < each_data.length; i++) {
-                            transformed_data.push(" " + each_data[i].content);
-                        };
-                        res.write(`data: ${transformed_data}\n\n`);
-                    }).catch(err => {
-                        res.status(500).send({
-                            message: err.message || "An error occurred while retrieving the database"
-                        });
-                    });
-            }, 1000);
-
-            res.on('close', () => {
-                console.log('Client closed connection')
-                clearInterval(intervalId)
-                res.end()
+    console.log('Server is ready to return data to client');
+    
+    const intervalId = setInterval(() => {
+        Data.find()
+            .then(each_data => {
+                const transformed_data = []
+                for (let i = 0; i < each_data.length; i++) {
+                    transformed_data.push(" " + each_data[i].content);
+                };
+                res.write(`data: ${transformed_data}\n\n`);
+            }).catch(err => {
+                res.status(500).send({
+                    message: err.message || "An error occurred while retrieving the database"
+                });
             });
-        })
-        .on('error', console.error);
+    }, 1000);
+
+    res.on('close', () => {
+        console.log('Client closed connection');
+        clearInterval(intervalId);
+        res.end();
+    });
+})
+.on('error', console.error);
 })
 
 const port = 5000;
